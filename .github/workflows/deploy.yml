@@ -1,0 +1,60 @@
+name: 축구 기사 앱 갱신 및 배포
+
+on:
+  push:
+    branches: ["main"]
+  workflow_dispatch:
+  schedule:
+    # 한국시간 오전 9시 = UTC 0시
+    - cron: "0 0 * * *"
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: github-pages
+  cancel-in-progress: true
+
+jobs:
+  update-and-deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+      - name: 저장소 코드 가져오기
+        uses: actions/checkout@v4
+
+      - name: Node.js 준비
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: 직전 기사 데이터 복원
+        uses: actions/cache@v4
+        with:
+          path: public/data/articles.json
+          key: football-news-${{ github.run_id }}
+          restore-keys: |
+            football-news-
+
+      - name: 중앙일보 축구 기사 5건 갱신
+        env:
+          MAX_ARTICLES: "5"
+        run: node scripts/fetch-news.mjs
+
+      - name: GitHub Pages 설정
+        uses: actions/configure-pages@v5
+
+      - name: 웹앱 파일 업로드
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: public
+
+      - name: GitHub Pages 배포
+        id: deployment
+        uses: actions/deploy-pages@v4
