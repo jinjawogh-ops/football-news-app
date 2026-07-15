@@ -1,0 +1,12 @@
+{
+  "name": "joongang-football-news-app",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "fetch": "node scripts/fetch-news.mjs"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

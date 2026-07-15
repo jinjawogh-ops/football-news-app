@@ -1,0 +1,16 @@
+{
+  "status": "error",
+  "message": "첫 GitHub Actions 실행 후 실제 축구 기사로 자동 교체됩니다.",
+  "source": {
+    "name": "중앙일보",
+    "section": "축구",
+    "url": "https://www.joongang.co.kr/sports/soccer"
+  },
+  "timezone": "Asia/Seoul",
+  "updatedAt": null,
+  "targetDate": null,
+  "todayCount": 0,
+  "articleCount": 0,
+  "usedRecentFallback": false,
+  "articles": []
+}
